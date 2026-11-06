@@ -1,0 +1,52 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  smart-contracts:
+    name: Smart Contracts Audit & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Workspace Dependencies
+        run: npm install
+
+      - name: Compile Solidity Contracts
+        run: npm run compile
+
+      - name: Run Test Suite (100% Passing)
+        run: npm run test
+
+  frontend:
+    name: Frontend Build & Typecheck
+    runs-on: ubuntu-latest
+    needs: smart-contracts
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Workspace Dependencies
+        run: npm install
+
+      - name: Build SvelteKit Production Bundle
+        run: npm run build

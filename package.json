@@ -1,0 +1,30 @@
+{
+  "name": "aegis-vote",
+  "version": "1.0.0",
+  "description": "Institutional-Grade Decentralized Voting & Cryptographic Ballot Protocol with Multi-Level RBAC and Time-Lock",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "contracts"
+  ],
+  "scripts": {
+    "compile": "npm run compile --workspace=contracts",
+    "test": "npm run test --workspace=contracts",
+    "deploy": "npm run deploy --workspace=contracts",
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "preview": "npm run preview --workspace=frontend"
+  },
+  "keywords": [
+    "solidity",
+    "smart-contracts",
+    "voting-system",
+    "rbac",
+    "distributed-systems",
+    "sveltekit",
+    "hardhat",
+    "web3"
+  ],
+  "author": "luminariadev <rizkianuari83@gmail.com>",
+  "license": "MIT"
+}

@@ -1,0 +1,19 @@
+services:
+  aegis-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis-vote-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+    networks:
+      - aegis-net
+
+networks:
+  aegis-net:
+    driver: bridge

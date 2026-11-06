@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Hardhat & Solidity
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# SvelteKit & Frontend Build
+frontend/.svelte-kit/
+frontend/build/
+frontend/dist/
+.vercel
+.output
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Temporary Files
+.DS_Store
+Thumbs.db
