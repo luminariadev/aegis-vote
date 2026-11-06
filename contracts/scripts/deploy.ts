@@ -5,7 +5,8 @@ async function main() {
   console.log("   🛡️  AEGISVOTE PROTOCOL - SMART CONTRACT DEPLOYMENT ");
   console.log("==================================================");
 
-  const [deployer] = await ethers.getSigners();
+  const signers = await ethers.getSigners();
+  const deployer = signers[0];
   console.log(`Deploying with account: ${deployer.address}`);
 
   const balance = await ethers.provider.getBalance(deployer.address);
@@ -14,12 +15,11 @@ async function main() {
   // Election Parameters
   const title = "Aegis Decentralized Governance Council 2026";
   const description =
-    "Institutional cryptographic ballot for protocol governance delegates with automated time-locks and RBAC.";
+    "Institutional cryptographic ballot for protocol governance delegates with automated block time-locks and multi-level RBAC.";
   
-  // Start election immediately, duration 7 days
   const currentBlock = await ethers.provider.getBlock("latest");
   const currentTime = currentBlock ? currentBlock.timestamp : Math.floor(Date.now() / 1000);
-  const startTime = currentTime + 60; // Voting opens in 1 minute
+  const startTime = currentTime + 300; // Start window in 5 minutes (allows candidate registration)
   const endTime = startTime + 7 * 24 * 3600; // 7 days voting window
   const quorumBps = 5000; // 50.00% quorum required
   const totalVotersCount = 10; // Demo electorate size
@@ -48,7 +48,7 @@ async function main() {
   console.log("--------------------------------------------------");
 
   // Register demo candidates
-  console.log("Registering initial candidates...");
+  console.log("Registering candidates platforms...");
   await aegisVote.registerCandidate(
     "Dr. Alice Nakamoto",
     "Pioneering cryptographic zero-knowledge systems, consensus security, and decentralized scaling."
@@ -62,8 +62,22 @@ async function main() {
     "Focusing on formal contract verification, peer-reviewed distributed systems, and verifiable random ballots."
   );
 
-  console.log(`Registered 3 candidates for ${title}.`);
-  console.log("Deployment and setup complete!");
+  // Whitelist demo accounts (deployer + test accounts 1-5)
+  console.log("Granting VOTER_ROLE to initial electorate...");
+  const voterAddresses = signers.slice(0, 6).map((s) => s.address);
+  await aegisVote.batchWhitelistVoters(voterAddresses);
+  console.log(`Whitelisted ${voterAddresses.length} voters:`, voterAddresses);
+
+  // Advance time past startTime so election is immediately active
+  try {
+    await ethers.provider.send("evm_increaseTime", [360]);
+    await ethers.provider.send("evm_mine", []);
+    console.log("Advanced local EVM clock: Election is now LIVE & ACTIVE!");
+  } catch (e) {
+    // If on a live network where evm_increaseTime isn't supported, ignore
+  }
+
+  console.log("Deployment and initial configuration successfully completed!");
 }
 
 main().catch((error) => {

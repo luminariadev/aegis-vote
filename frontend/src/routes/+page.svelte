@@ -21,7 +21,7 @@
 		checkUserRoles
 	} from '$lib/stores/walletStore';
 	import { CONTRACT_ADDRESS, CONTRACT_ABI } from '$lib/config';
-	import { Contract } from 'ethers';
+	import { Contract, JsonRpcProvider } from 'ethers';
 	import { onMount } from 'svelte';
 
 	interface CandidateItem {
@@ -84,9 +84,18 @@
 	let totalVotes = $derived(candidates.reduce((acc, c) => acc + c.voteCount, 0));
 
 	async function loadBlockchainData() {
-		if (!$provider) return;
+		let activeProv: any = $provider;
+		if (!activeProv) {
+			try {
+				activeProv = new JsonRpcProvider('http://127.0.0.1:8545');
+			} catch (err) {
+				console.warn('Fallback JSON-RPC provider unavailable:', err);
+				return;
+			}
+		}
+
 		try {
-			const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, $provider);
+			const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, activeProv);
 
 			const [elecRaw, activeRaw, pausedRaw, countRaw, quorumRaw, leadRaw] = await Promise.all([
 				contract.election(),
@@ -172,6 +181,10 @@
 			isVoting = false;
 		}
 	}
+
+	onMount(() => {
+		loadBlockchainData();
+	});
 
 	$effect(() => {
 		if ($provider) {

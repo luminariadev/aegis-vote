@@ -15,6 +15,7 @@
 
 ## 📑 Table of Contents
 
+- [Application Interface & Interactive Walkthrough](#-application-interface--interactive-walkthrough)
 - [Architectural Innovations](#-architectural-innovations)
 - [Protocol State Machine](#-protocol-state-machine)
 - [Cryptographic Workflow](#-cryptographic-workflow)
@@ -28,6 +29,27 @@
 - [Docker Deployment](#-docker-deployment)
 - [Security Auditing & Hardening](#-security-auditing--hardening)
 - [Author & License](#-author--license)
+
+---
+
+## 📸 Application Interface & Interactive Walkthrough
+
+AegisVote delivers an institutional, glassmorphic dark interface designed for clarity, security, and transparent real-time voter feedback:
+
+### 1. Cryptographic Ballot Box & Quorum Progress Tracker
+Interactive voting interface featuring live time-lock countdown, registered candidates, and a dynamic quorum progress bar with target threshold indicators.
+
+![Cryptographic Ballot Box & Quorum Progress Tracker](screenshots/ballot-box-quorum.png)
+
+### 2. Live Tabulation & Front-Runner Recognition
+Real-time vote aggregation streamed directly from EVM contract storage without intermediate centralized caching, calculating voter percentage shares and winner standing.
+
+![Live Tabulation & Front-Runner Recognition](screenshots/live-tabulation.png)
+
+### 3. Protocol Architecture & Cryptographic Verifications
+Transparent on-chain inspection displaying active contract parameters, RBAC role hierarchy, and zero-knowledge/Merkle Tree root state.
+
+![Protocol Architecture & Cryptographic Verifications](screenshots/protocol-architecture.png)
 
 ---
 
